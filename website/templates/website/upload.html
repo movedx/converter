@@ -1,0 +1,12 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+  <div class="upload-container">
+    <h2>Upload a file to convert</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload and Convert</button>
+    </form>
+  </div>
+{% endblock %}

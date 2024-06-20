@@ -1,0 +1,13 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+  <div class="result-container">
+    <h2>Conversion Result</h2>
+    {% if media_file.converted_file %}
+      <p>File converted successfully!</p>
+      <a href="{{ media_file.converted_file.url }}" download>Download Converted File</a>
+    {% else %}
+      <p>Conversion failed. Please try again.</p>
+    {% endif %}
+  </div>
+{% endblock %}
