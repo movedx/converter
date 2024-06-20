@@ -1,12 +1,17 @@
 {% extends 'website/base.html' %}
 
 {% block content %}
-  <div class="upload-container">
-    <h2>Upload a file to convert</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Upload and Convert</button>
-    </form>
-  </div>
+  <form method="post" enctype="multipart/form-data" class="upload-container">
+    {% csrf_token %}
+    <label for="{{ form.file.id_for_label }}">Select a file:</label>
+    {{ form.file }}
+
+    <label for="{{ form.output_format.id_for_label }}">Select output format:</label>
+    {{ form.output_format }}
+
+    <label for="{{ form.bitrate.id_for_label }}">Select bitrate (only for MP3):</label>
+    {{ form.bitrate }}
+
+    <button type="submit">Upload</button>
+  </form>
 {% endblock %}
