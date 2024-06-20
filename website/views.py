@@ -3,11 +3,6 @@ from .forms import UploadFileForm
 from .models import MediaFile
 from .converters.ffmpeg_converter import convert_media
 
-from django.shortcuts import render, redirect
-from .forms import UploadFileForm
-from .models import MediaFile
-from .converters.ffmpeg_converter import convert_media
-
 
 def upload_file(request):
     if request.method == 'POST':
