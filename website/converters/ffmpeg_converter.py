@@ -4,7 +4,7 @@ from django.conf import settings
 
 def convert_media(input_file_path, output_format, bitrate=None):
     base_dir = os.path.dirname(input_file_path)
-    output_file_name = f"{os.path.splitext(os.path.basename(input_file_path))[0]}.{output_format}"
+    output_file_name = f"{input_file_path}_converted.{output_format}"
     output_file_path = os.path.join(base_dir, output_file_name)
 
     try:
