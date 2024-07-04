@@ -2,12 +2,30 @@
 
 {% block content %}
   <div class="result-container">
-    <h2>Conversion Result</h2>
-    {% if media_file.converted_file %}
-      <p>File converted successfully!</p>
-      <a href="{{ media_file.converted_file.url }}" download>Download Converted File</a>
+    <h2>Conversion Results</h2>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if media_files %}
+      {% for media_file in media_files %}
+        <div class="file-result">
+          <h3>File: {{ media_file.file.name }}</h3>
+          {% if media_file.converted_file %}
+            <p>File converted successfully!</p>
+            <a href="{{ media_file.converted_file.url }}" class="btn btn-primary" download>Download Converted File</a>
+          {% else %}
+            <p>Conversion failed for this file. Please try again.</p>
+          {% endif %}
+        </div>
+      {% endfor %}
     {% else %}
-      <p>Conversion failed. Please try again.</p>
+      <p>No files were successfully converted.</p>
     {% endif %}
   </div>
 {% endblock %}
