@@ -18,7 +18,7 @@
           <h3>File: {{ media_file.file.name }}</h3>
           {% if media_file.converted_file %}
             <p>File converted successfully!</p>
-            <a href="{{ media_file.converted_file.url }}" class="btn btn-primary" download>Download Converted File</a>
+            <a href="{% url 'download_file' media_file.id %}" class="btn btn-primary">Download Converted File</a>
           {% else %}
             <p>Conversion failed for this file. Please try again.</p>
           {% endif %}

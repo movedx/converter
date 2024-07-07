@@ -1,9 +1,12 @@
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+import mimetypes
+import os
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import UploadFileForm
 from .models import MediaFile
 from .converters.ffmpeg_converter import convert_media
 from django.contrib import messages
+from urllib.parse import quote
 
 
 def upload_file(request: HttpRequest):
@@ -40,6 +43,42 @@ def result(request: HttpRequest, media_file_ids):
         media_files.append(MediaFile.objects.get(id=id))
 
     return render(request, 'website/result.html', {'media_files': media_files})
+
+
+def download_file(request, media_file_id):
+    try:
+        media_file = MediaFile.objects.get(id=media_file_id)
+        file_path = media_file.converted_file.path
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(file_path)[0])
+                response['Content-Disposition'] = f'attachment; filename={quote(media_file.converted_file.name)}'
+                # Log the download event
+                log_download_event(request, media_file)
+
+                # Get the paths for both the uploaded and converted files
+                uploaded_file_path = media_file.file.path
+                converted_file_path = media_file.converted_file.path
+
+                # Close the file handle
+                fh.close()
+
+                # Delete the files
+                if os.path.exists(uploaded_file_path):
+                    os.remove(uploaded_file_path)
+                if os.path.exists(converted_file_path):
+                    os.remove(converted_file_path)
+
+                media_file.delete()  # Delete the database record
+
+                return response
+        else:
+            raise Http404("File not found")
+    except MediaFile.DoesNotExist:
+        raise Http404("File not found")
+
+def log_download_event(request, media_file):
+    print(f"User {request.user} downloaded the file {media_file.converted_file.name}")
 
 
 def test_response(request: HttpRequest):
