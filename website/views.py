@@ -17,7 +17,6 @@ def upload_file(request: HttpRequest):
                     media_file = MediaFile(file=file, output_format=form.cleaned_data['output_format'])
                     media_file.save()
                 
-                    # Retrieve the selected bitrate from the form data
                     bitrate = form.cleaned_data['bitrate']
                     converted_file_path = convert_media(media_file.file.path, media_file.output_format, bitrate)
 
@@ -36,8 +35,6 @@ def upload_file(request: HttpRequest):
 
 def result(request: HttpRequest, media_file_ids):
     media_file_ids_list = list(map(int, media_file_ids.split(',')))
-    print("\n\n media file ids: \n\n", media_file_ids, "\n\n")
-    print("\n\n media file ids list: \n\n", media_file_ids_list, "\n\n")
     media_files = []
     for id in media_file_ids_list:
         media_files.append(MediaFile.objects.get(id=id))
