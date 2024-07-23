@@ -2,3 +2,4 @@
 secrets.py
 /media/*
 db.sqlite3
+.history
