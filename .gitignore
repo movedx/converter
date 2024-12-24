@@ -3,3 +3,5 @@ secrets.py
 /media/*
 db.sqlite3
 .history
+media-converter.tar
+db.sqlite3

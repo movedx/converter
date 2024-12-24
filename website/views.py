@@ -8,6 +8,9 @@ from .converters.ffmpeg_converter import convert_media
 from django.contrib import messages
 from urllib.parse import quote
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def upload_file(request: HttpRequest):
     if request.method == 'POST':
@@ -27,10 +30,17 @@ def upload_file(request: HttpRequest):
                         media_file.converted_file = converted_file_path
                         media_file.save()
                         converted_media_ids.append(media_file.id)
+                    else:
+                        logger.error(f"Conversion failed for file: {file.name}")
             except Exception as e:
+                logger.error(f"Error processing file {file.name}: {str(e)}")
                 messages.error(request, f"Error processing file {file.name}: {str(e)}")
 
-            return redirect('result', media_file_ids=','.join(map(str, converted_media_ids)))
+            if converted_media_ids:
+                return redirect('result', media_file_ids=','.join(map(str, converted_media_ids)))
+            else:
+                messages.error(request, "No files were successfully converted.")
+                return redirect('upload_file')
     else:
         form = UploadFileForm()
     return render(request, 'website/upload.html', {'form': form})

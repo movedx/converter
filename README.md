@@ -42,11 +42,26 @@ Media Converter is a Django-based web application for converting media files to 
 
 5. **Start the development server**:
     ```bash
-    python manage.py runserver 0.0.0.0:8000
+    python manage.py runserver 0.0.0.0:8123
+    ```
+
+    **Build docker image**
+    ```bash
+    docker build -t media-converter .
+    ```
+
+    **Run container**
+    ```bash
+    docker run -d -p 8123:8123 -v /path/to/local/media:/app/media
+    ```
+
+    **Save image**
+    ```bash
+    docker save -o media-converter.tar media-converter
     ```
 
 6. **Access the application**:
-    Open your browser and go to `http://127.0.0.1:8000`.
+    Open your browser and go to `http://127.0.0.1:8123`.
 
 ## Usage
 

@@ -28,7 +28,7 @@ SECRET_KEY = secrets.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['45.159.222.124', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['194.238.24.201', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -124,6 +124,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # Media files
